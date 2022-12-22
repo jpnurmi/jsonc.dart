@@ -20,7 +20,7 @@ String escape(String s) {
     int code = s.codeUnitAt(i);
     if (code == '\\'.codeUnitAt(0)) {
       sb.write(r'\\');
-    } else if (code == '\"'.codeUnitAt(0)) {
+    } else if (code == '"'.codeUnitAt(0)) {
       sb.write(r'\"');
     } else if (code >= 32 && code < 127) {
       sb.writeCharCode(code);
@@ -176,7 +176,7 @@ void main() {
   test('strings', () {
     // String parser accepts and understands escapes.
     var input = r'"\u0000\uffff\n\r\f\t\b\/\\\"' '\x20\ufffd\uffff"';
-    var expected = "\u0000\uffff\n\r\f\t\b\/\\\"\x20\ufffd\uffff";
+    var expected = "\u0000\uffff\n\r\f\t\b/\\\"\x20\ufffd\uffff";
     testJson(input, expected);
     // Empty string.
     testJson(r'""', "");
