@@ -146,8 +146,6 @@ void main() {
     // json_strict_test.dart because IE's jsonDecode accepts additional initial
     // zeros.
 
-    // Only minus allowed as sign.
-    testError(signs: "+");
     // Requires digits after decimal point.
     testError(fractions: ".");
     // Requires exponent digts, and only digits.
