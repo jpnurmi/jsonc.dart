@@ -1234,8 +1234,8 @@ abstract class _ChunkedJsonParser<T> {
     // Break this block when the end of the number literal is reached.
     // At that time, position points to the next character, and isDouble
     // is set if the literal contains a decimal point or an exponential.
-    if (char == MINUS) {
-      sign = -1;
+    if (char == MINUS || char == PLUS) {
+      sign = char == MINUS ? -1 : 1;
       position++;
       if (position == length) return beginChunkNumber(NUM_SIGN, start);
       char = getChar(position);

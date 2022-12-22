@@ -2,6 +2,13 @@ import 'package:jsonc/jsonc.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('plus sign', () {
+    expect(jsoncDecode('+5'), 5);
+    expect(jsoncDecode('+42'), 42);
+    expect(jsoncDecode('+3e0'), 3);
+    expect(jsoncDecode('+3.14'), 3.14);
+  });
+
   test('line comment', () {
     expect(jsoncDecode('// comment\n{ "foo": true }'), {'foo': true});
     expect(jsoncDecode('{\n// comment\n"foo": true }'), {'foo': true});
