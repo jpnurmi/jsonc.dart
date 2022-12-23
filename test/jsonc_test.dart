@@ -9,6 +9,18 @@ void main() {
     expect(jsoncDecode('+3.14'), 3.14);
   });
 
+  test('hex number', () {
+    expect(jsoncDecode('0x5'), 0x5);
+    expect(jsoncDecode('0X5'), 0x5);
+    expect(jsoncDecode('0x42'), 0x42);
+    expect(jsoncDecode('0X42'), 0x42);
+
+    expect(jsoncDecode('{"x": 0x5}'), {'x': 0x5});
+    expect(jsoncDecode('{"x": 0X5}'), {'x': 0x5});
+    expect(jsoncDecode('{"x": 0x42}'), {'x': 0x42});
+    expect(jsoncDecode('{"x": 0X42}'), {'x': 0x42});
+  });
+
   test('line comment', () {
     expect(jsoncDecode('// comment\n{ "foo": true }'), {'foo': true});
     expect(jsoncDecode('{\n// comment\n"foo": true }'), {'foo': true});
