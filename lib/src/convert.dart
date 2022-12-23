@@ -192,8 +192,8 @@ class _NumberBuffer {
     this.list = newList;
   }
 
-  String getString() {
-    String result = String.fromCharCodes(list, 0, length);
+  String getString([int start = 0]) {
+    String result = String.fromCharCodes(list, start, length);
     return result;
   }
 
@@ -202,6 +202,7 @@ class _NumberBuffer {
   // performance.
   num parseNum() => num.parse(getString());
   double parseDouble() => double.parse(getString());
+  int parseHexNumber() => int.parse(getString(2), radix: 16);
 }
 
 /**
@@ -304,6 +305,7 @@ abstract class _ChunkedJsonParser<T> {
   static const int CHAR_s = 0x73;
   static const int CHAR_t = 0x74;
   static const int CHAR_u = 0x75;
+  static const int CHAR_x = 0x78;
   static const int LBRACE = 0x7b;
   static const int RBRACE = 0x7d;
 
@@ -324,6 +326,7 @@ abstract class _ChunkedJsonParser<T> {
   static const int NUM_E_SIGN = 24; // After '-' or '+' after 'e' or 'E'.
   static const int NUM_E_DIGIT = 28; // After exponent digit.
   static const int NUM_SUCCESS = 32; // Never stored as partial state.
+  static const int NUM_HEX = 36; // After '0x' or '0X'.
 
   // Partial states for strings.
   static const int STR_PLAIN = 0; // Inside string, but not escape.
@@ -1211,6 +1214,8 @@ abstract class _ChunkedJsonParser<T> {
       listener.handleNumber(value);
     } else if (state == NUM_DOT_DIGIT || state == NUM_E_DIGIT) {
       listener.handleNumber(buffer.parseDouble());
+    } else if (state == NUM_HEX) {
+      listener.handleNumber(buffer.parseHexNumber());
     } else {
       fail(chunkEnd, "Unterminated number literal");
     }
@@ -1253,9 +1258,20 @@ abstract class _ChunkedJsonParser<T> {
       position++;
       if (position == length) return beginChunkNumber(NUM_ZERO, start);
       char = getChar(position);
-      digit = char ^ CHAR_0;
-      // If starting with zero, next character must not be digit.
-      if (digit <= 9) fail(position);
+      if ((char | 0x20) == CHAR_x) {
+        // Hex number.
+        do {
+          intValue = 16 * intValue - digit;
+          position++;
+          if (position == length) return beginChunkNumber(NUM_HEX, start);
+          char = getChar(position);
+          digit = parseHexDigit(char);
+        } while (digit >= 0 && digit <= 15);
+      } else {
+        digit = char ^ CHAR_0;
+        // If starting with zero, next character must not be digit.
+        if (digit <= 9) fail(position);
+      }
     } else {
       int digitCount = 0;
       do {
