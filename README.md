@@ -5,7 +5,7 @@
 [![CI](https://github.com/ubuntu-flutter-community/jsonc.dart/actions/workflows/ci.yaml/badge.svg)](https://github.com/ubuntu-flutter-community/jsonc.dart/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/ubuntu-flutter-community/jsonc.dart/branch/main/graph/badge.svg?token=UPEXMCJDCN)](https://codecov.io/gh/ubuntu-flutter-community/jsonc.dart)
 
-JSON with comments and trailing commas.
+A lightweight library for encoding and decoding JSON with comments and trailing commas support.
 
 ```dart
 import 'package:jsonc/jsonc.dart';

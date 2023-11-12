@@ -1,5 +1,5 @@
 name: jsonc
-description: JSON with comments and trailing commas.
+description: A lightweight library for encoding and decoding JSON with comments and trailing commas support.
 homepage: https://github.com/ubuntu-flutter-community/jsonc.dart
 repository: https://github.com/ubuntu-flutter-community/jsonc.dart
 issue_tracker: https://github.com/ubuntu-flutter-community/jsonc.dart/issues
